@@ -1,59 +1,109 @@
-# Library Server
+# Library Project — Local Dev Setup Guide
 
-Backend service for the Library application.
+## Prerequisites
 
-## Overview
+Make sure you have the following installed:
 
-This repository contains the server-side code for the Library project. It is intended to power the companion client application, handle business logic, and expose the data and operations needed by the frontend.
+- [Git](https://git-scm.com/)
+- [.NET SDK](https://dotnet.microsoft.com/download)
+- [Node.js](https://nodejs.org/) (v18+)
+- [Angular CLI](https://angular.io/cli) — install with `npm install -g @angular/cli`
 
-## What this project is for
+---
 
-The server is expected to handle tasks such as:
+## Folder Structure
 
-- managing library resources and records
-- processing requests from the client application
-- applying server-side validation and business rules
-- connecting to any configured data storage or external services
+```
+Library-Project/
+├── Library-Client-Dev/        ← Git repo → GitHub (Angular frontend)
+│   └── Library-Client-Dev/
+│       ├── src/
+│       ├── public/
+│       └── ...
+├── Library-Server-Dev/        ← Git repo → GitHub (.NET Web API)
+│   └── Library-Server-Dev/
+│       ├── Controllers/
+│       ├── DTOs/
+│       └── Data/
+└── Project.sln
+```
 
-## Getting started
+---
 
-1. Clone the repository.
-2. Install the project dependencies for the backend stack used in this repo.
-3. Configure environment variables, database settings, or application properties as needed.
-4. Start the server using the project’s normal development command.
+## Setup Steps
 
-## Typical local workflow
+### 1. Create the parent folder and clone the repos
 
-- run the server locally
-- start the client application separately
-- point the client to this server’s local URL
-- test the main library flows end to end
+```bash
+mkdir Library-Project
+cd Library-Project
 
-## Configuration
+git clone https://github.com/erinmaldonado/Library-Client-Dev.git
+git clone https://github.com/erinmaldonado/Library-Server-Dev.git
+```
 
-Before running the project, make sure any required configuration is set up, such as:
+### 2. Create the .NET Web API project (server)
 
-- server port
-- database connection details
-- API keys or secrets
-- CORS or frontend origin settings
+```bash
+cd Library-Server-Dev
+dotnet new webapi -n Library-Server-Dev
+cd ..
+```
 
-## Suggested documentation to add
+Then create the server subfolders:
 
-As the project evolves, consider expanding this README with:
+```bash
+mkdir Library-Server-Dev/Library-Server-Dev/Controllers
+mkdir Library-Server-Dev/Library-Server-Dev/DTOs
+mkdir Library-Server-Dev/Library-Server-Dev/Data
+```
 
-- the exact tech stack
-- setup commands
-- environment variables
-- API endpoint examples
-- database setup instructions
-- testing steps
-- deployment notes
+### 3. Create the Angular project (client)
 
-## Related repository
+```bash
+cd Library-Client-Dev
+rm -rf Library-Client-Dev   # remove any empty placeholder folder first
+ng new Library-Client-Dev
+# Choose: Sass (SCSS) for stylesheets
+# Choose: N for Server-Side Rendering
+cd ..
+```
 
-This backend appears to pair with the companion client repository for the same Library project.
+### 4. Create the solution file and add the server project
 
-## Status
+```bash
+dotnet new sln -n Project
+dotnet sln Project.sln add Library-Server-Dev/Library-Server-Dev/Library-Server-Dev.csproj
+```
 
-Starter README added so the repository has basic documentation. It can be refined further with stack-specific setup and API details.
+> Note: The Angular client does not have a `.csproj` file and does not need to be added to the solution.
+
+### 5. Make the initial commit and push both repos
+
+**Client:**
+```bash
+cd Library-Client-Dev
+git add .
+git commit -m "initial commit - frontend"
+git push origin main
+cd ..
+```
+
+**Server:**
+```bash
+cd Library-Server-Dev
+git add .
+git commit -m "initial commit - backend"
+git push origin main
+cd ..
+```
+
+---
+
+## Tips
+
+- The `Library-Project/` parent folder is **local only** — it is not its own Git repo.
+- Each subfolder (`Library-Client-Dev/`, `Library-Server-Dev/`) is its own independent Git repo.
+- To run the Angular app: `cd Library-Client-Dev/Library-Client-Dev && ng serve`
+- To run the .NET API: `cd Library-Server-Dev/Library-Server-Dev && dotnet run`
+- In the terminal, use **Shift + Enter** for a new line without sending.
