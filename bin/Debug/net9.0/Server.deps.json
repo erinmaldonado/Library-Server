@@ -9,7 +9,6 @@
       "Server/1.0.0": {
         "dependencies": {
           "CsvHelper": "33.1.0",
-          "LibraryModel": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "9.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.0",
           "Microsoft.AspNetCore.OpenApi": "9.0.0",
@@ -632,21 +631,6 @@
             "fileVersion": "8.2.1.51115"
           }
         }
-      },
-      "LibraryModel/1.0.0": {
-        "dependencies": {
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.0",
-          "Microsoft.EntityFrameworkCore": "9.0.0",
-          "Microsoft.EntityFrameworkCore.Design": "9.0.0",
-          "Microsoft.EntityFrameworkCore.Relational": "9.0.0",
-          "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.0"
-        },
-        "runtime": {
-          "LibraryModel.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
       }
     }
   },
@@ -928,11 +912,6 @@
       "sha512": "sha512-GVQmbjr2N8awFWPTWyThLxgKnFINObG1P+oX7vFrBY8um3V7V7Dh3wnxaGxNH6v6lSTeVQrY+SaUUBX9H3TPcw==",
       "path": "system.identitymodel.tokens.jwt/8.2.1",
       "hashPath": "system.identitymodel.tokens.jwt.8.2.1.nupkg.sha512"
-    },
-    "LibraryModel/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     }
   }
 }

@@ -1255,24 +1255,6 @@
         "build": {
           "buildTransitive/net6.0/_._": {}
         }
-      },
-      "LibraryModel/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v9.0",
-        "dependencies": {
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.0",
-          "Microsoft.EntityFrameworkCore": "9.0.0",
-          "Microsoft.EntityFrameworkCore.Design": "9.0.0",
-          "Microsoft.EntityFrameworkCore.Relational": "9.0.0",
-          "Microsoft.EntityFrameworkCore.Tools": "9.0.0",
-          "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.0"
-        },
-        "compile": {
-          "bin/placeholder/LibraryModel.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/LibraryModel.dll": {}
-        }
       }
     }
   },
@@ -3807,17 +3789,11 @@
         "system.threading.channels.nuspec",
         "useSharedDesignerContext.txt"
       ]
-    },
-    "LibraryModel/1.0.0": {
-      "type": "project",
-      "path": "../LibraryModel/LibraryModel.csproj",
-      "msbuildProject": "../LibraryModel/LibraryModel.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
       "CsvHelper >= 33.1.0",
-      "LibraryModel >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 9.0.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 9.0.0",
       "Microsoft.AspNetCore.OpenApi >= 9.0.0",
@@ -3835,11 +3811,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/em/Project/Server/Server/Server.csproj",
+      "projectUniqueName": "/Users/em/VSCodeProjects/Library-Project/Library-Server-Dev/Server.csproj",
       "projectName": "Server",
-      "projectPath": "/Users/em/Project/Server/Server/Server.csproj",
+      "projectPath": "/Users/em/VSCodeProjects/Library-Project/Library-Server-Dev/Server.csproj",
       "packagesPath": "/Users/em/.nuget/packages/",
-      "outputPath": "/Users/em/Project/Server/Server/obj/",
+      "outputPath": "/Users/em/VSCodeProjects/Library-Project/Library-Server-Dev/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/em/.nuget/NuGet/NuGet.Config"
@@ -3853,11 +3829,7 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {
-            "/Users/em/Project/Server/LibraryModel/LibraryModel.csproj": {
-              "projectPath": "/Users/em/Project/Server/LibraryModel/LibraryModel.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
