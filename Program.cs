@@ -9,15 +9,28 @@ using Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Railway port binding
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 // Add services to the container
 builder.Services.AddControllers();
+
+static string ConvertDatabaseUrl(string databaseUrl)
+{
+    var uri = new Uri(databaseUrl);
+    var userInfo = uri.UserInfo.Split(':');
+    return $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]}";
+}
+
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") is string dbUrl
+    ? ConvertDatabaseUrl(dbUrl)
+    : builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Database Context
 builder.Services.AddDbContext<LibraryModelContext>(options =>
 {
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        b => b.MigrationsAssembly("Server"));
+    options.UseNpgsql(connectionString, b => b.MigrationsAssembly("Server"));
 });
 
 // Identity Setup
@@ -47,10 +60,14 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        ValidIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") 
+            ?? builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") 
+            ?? builder.Configuration["JwtSettings:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]!))
+            Encoding.UTF8.GetBytes(
+                Environment.GetEnvironmentVariable("JWT_SECRET_KEY") 
+                ?? builder.Configuration["JwtSettings:SecretKey"]!))
     };
 });
 
