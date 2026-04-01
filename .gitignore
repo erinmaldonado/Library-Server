@@ -1,1 +1,13 @@
 appsettings.json
+appsettings.Development.json
+.env
+.env.local
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+bin/
+obj/
+.env
+.env.local
+.vercel
