@@ -284,3 +284,4 @@
 /Users/em/VSCodeProjects/Library-Project/Library-Server-Dev/obj/Debug/net9.0/Server.genruntimeconfig.cache
 /Users/em/VSCodeProjects/Library-Project/Library-Server-Dev/obj/Debug/net9.0/ref/Server.dll
 /Users/em/VSCodeProjects/Library-Project/Library-Server-Dev/bin/Debug/net9.0/appsettings.json
+/Users/em/VSCodeProjects/Library-Project/Library-Server-Dev/bin/Debug/net9.0/appsettings.example.json

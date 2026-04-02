@@ -16,15 +16,18 @@ builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 // Add services to the container
 builder.Services.AddControllers();
 
+// Convert DATABASE_URL to a format suitable for Npgsql
 static string ConvertDatabaseUrl(string databaseUrl)
 {
     var uri = new Uri(databaseUrl);
     var userInfo = uri.UserInfo.Split(':');
-    return $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]}";
+    var port = uri.Port > 0 ? uri.Port : 5432;
+    return $"Host={uri.Host};Port={port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=true";
 }
 
+// Get connection string from environment variable or configuration
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") is string dbUrl
-    ? ConvertDatabaseUrl(dbUrl)
+    ? (dbUrl.StartsWith("Host=") ? dbUrl : ConvertDatabaseUrl(dbUrl))
     : builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Database Context
@@ -76,8 +79,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-    
-    // ADD THIS SECTION:
+    // Add JWT Authentication to Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token",
@@ -107,11 +109,22 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// Enable CORS for all origins, methods, and headers (adjust as needed for production)
 app.UseCors(options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
+// Enable authentication and authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Apply pending migrations at startup
+using (var scope =
+ app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider
+        .GetRequiredService<LibraryModelContext>();
+    db.Database.Migrate();
+}
 
 app.Run();
