@@ -20,40 +20,38 @@ namespace Server.Services
 
         public async Task<JwtSecurityToken> GenerateTokenAsync(LibraryModelUser user)
         {
-            var jwtSettings = _configuration.GetSection("JwtSettings");
-            var secretKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(jwtSettings["SecretKey"] ?? ""));
-
-            var signingCredentials = new SigningCredentials(
-                secretKey,
-                SecurityAlgorithms.HmacSha256);
-
             // Get user roles
             var roles = await _userManager.GetRolesAsync(user);
-
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Name, user.UserName ?? ""),
-                new Claim(ClaimTypes.Email, user.Email ?? "")
-            };
-
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Name, user.UserName ?? ""),
+            new Claim(ClaimTypes.Email, user.Email ?? "")
+        };
             // Add role claims
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
-
-            var expiryMinutes = int.Parse(jwtSettings["ExpiryInMinutes"] ?? "60");
-
+            var secretKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(
+                    Environment.GetEnvironmentVariable("JWT_SECRET_KEY")
+                    ?? _configuration["JwtSettings:SecretKey"] ?? ""));
+            var signingCredentials = new SigningCredentials(
+                secretKey, SecurityAlgorithms.HmacSha256);
+            var issuer = Environment.GetEnvironmentVariable("JWT_ISSUER")
+                ?? _configuration["JwtSettings:Issuer"];
+            var audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")
+                ?? _configuration["JwtSettings:Audience"];
+            var expiryMinutes = int.Parse(
+                _configuration["JwtSettings:ExpiryInMinutes"] ?? "60");
             var token = new JwtSecurityToken(
-                issuer: jwtSettings["Issuer"],
-                audience: jwtSettings["Audience"],
+                issuer: issuer,
+                audience: audience,
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
                 signingCredentials: signingCredentials
             );
-
             return token;
         }
     }
