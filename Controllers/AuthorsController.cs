@@ -93,7 +93,7 @@ namespace Server.Controllers
 
         // POST: api/Authors
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<AuthorDto>> PostAuthor(Author author)
         {
             _context.Authors.Add(author);
@@ -108,7 +108,7 @@ namespace Server.Controllers
 
         // PUT: api/Authors/5
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PutAuthor(int id, Author author)
         {
             if (id != author.Id)
@@ -139,7 +139,7 @@ namespace Server.Controllers
 
         // DELETE: api/Authors/5
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {
             var author = await _context.Authors.FindAsync(id);

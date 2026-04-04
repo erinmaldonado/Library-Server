@@ -141,7 +141,7 @@ namespace Server.Controllers
 
         // PUT: api/Books/5
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PutBook(int id, Book book)
         {
             if (id != book.Id)
@@ -178,7 +178,7 @@ namespace Server.Controllers
 
         // POST: api/Books
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<Book>> PostBook(Book book)
         {
             var authorExists = await _context.Authors.AnyAsync(a => a.Id == book.AuthorId);
@@ -195,7 +195,7 @@ namespace Server.Controllers
 
         // DELETE: api/Books/5
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteBook(int id)
         {
             var book = await _context.Books.FindAsync(id);
