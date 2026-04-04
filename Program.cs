@@ -7,6 +7,8 @@ using Microsoft.OpenApi.Models;
 using LibraryModel;
 using Server.Services;
 
+// Load environment variables from .env.local
+DotNetEnv.Env.Load(Path.Combine(Directory.GetCurrentDirectory(), ".env.local"));
 var builder = WebApplication.CreateBuilder(args);
 
 // Railway port binding
