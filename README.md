@@ -1,109 +1,146 @@
-# Library Project — Local Dev Setup Guide
+# 📚 Library Management System
 
-## Prerequisites
+A full-stack web application for managing a library's books, authors, and loans. Built with an ASP.NET Core REST API backend and an Angular 21 frontend, featuring role-based access control, JWT authentication, and a real-time dashboard.
 
-Make sure you have the following installed:
-
-- [Git](https://git-scm.com/)
-- [.NET SDK](https://dotnet.microsoft.com/download)
-- [Node.js](https://nodejs.org/) (v18+)
-- [Angular CLI](https://angular.io/cli) — install with `npm install -g @angular/cli`
+🔗 **[Live Demo](https://library-client-dev.vercel.app/login)**  
+🖥️ **[Backend Repo](https://github.com/erinmaldonado/Library-Server)**  
+💻 **[Frontend Repo](https://github.com/erinmaldonado/Library-Client)**
 
 ---
 
-## Folder Structure
+## Screenshots
 
-```
-Library-Project/
-├── Library-Client-Dev/        ← Git repo → GitHub (Angular frontend)
-│   └── Library-Client-Dev/
-│       ├── src/
-│       ├── public/
-│       └── ...
-├── Library-Server-Dev/        ← Git repo → GitHub (.NET Web API)
-│   └── Library-Server-Dev/
-│       ├── Controllers/
-│       ├── DTOs/
-│       └── Data/
-└── Project.sln
-```
+### Dashboard
+> Personalized welcome with live stats: total books, authors, active loans, and overdue count.
 
----
+![Dashboard](screenshots/dashboard.png)
 
-## Setup Steps
+### Books
+> Browse the full catalog with title, author, category, publisher, price, and year. Users can borrow books directly from this view.
 
-### 1. Create the parent folder and clone the repos
+![Books](screenshots/books.png)
 
-```bash
-mkdir Library-Project
-cd Library-Project
+### Authors
+> Manage authors with add, edit, and delete functionality.
 
-git clone https://github.com/erinmaldonado/Library-Client-Dev.git
-git clone https://github.com/erinmaldonado/Library-Server-Dev.git
-```
+![Authors](screenshots/authors.png)
 
-### 2. Create the .NET Web API project (server)
+### Loans (Admin)
+> Admins see all loans across all users with borrowed/due dates, status badges, and the ability to mark loans overdue, process returns, or delete records.
 
-```bash
-cd Library-Server-Dev
-dotnet new webapi -n Library-Server-Dev
-cd ..
-```
+![Loans Admin](screenshots/loans-admin.png)
 
-Then create the server subfolders:
+### My Library (User)
+> Each user sees only their own borrowed books, due dates, and loan status.
 
-```bash
-mkdir Library-Server-Dev/Library-Server-Dev/Controllers
-mkdir Library-Server-Dev/Library-Server-Dev/DTOs
-mkdir Library-Server-Dev/Library-Server-Dev/Data
-```
-
-### 3. Create the Angular project (client)
-
-```bash
-cd Library-Client-Dev
-rm -rf Library-Client-Dev   # remove any empty placeholder folder first
-ng new Library-Client-Dev
-# Choose: Sass (SCSS) for stylesheets
-# Choose: N for Server-Side Rendering
-cd ..
-```
-
-### 4. Create the solution file and add the server project
-
-```bash
-dotnet new sln -n Project
-dotnet sln Project.sln add Library-Server-Dev/Library-Server-Dev/Library-Server-Dev.csproj
-```
-
-> Note: The Angular client does not have a `.csproj` file and does not need to be added to the solution.
-
-### 5. Make the initial commit and push both repos
-
-**Client:**
-```bash
-cd Library-Client-Dev
-git add .
-git commit -m "initial commit - frontend"
-git push origin main
-cd ..
-```
-
-**Server:**
-```bash
-cd Library-Server-Dev
-git add .
-git commit -m "initial commit - backend"
-git push origin main
-cd ..
-```
+![My Library](screenshots/my-library.png)
 
 ---
 
-## Tips
+## Features
 
-- The `Library-Project/` parent folder is **local only** — it is not its own Git repo.
-- Each subfolder (`Library-Client-Dev/`, `Library-Server-Dev/`) is its own independent Git repo.
-- To run the Angular app: `cd Library-Client-Dev/Library-Client-Dev && ng serve`
-- To run the .NET API: `cd Library-Server-Dev/Library-Server-Dev && dotnet run`
-- In the terminal, use **Shift + Enter** for a new line without sending.
+### Authentication & Authorization
+- JWT-based login with role-based access (Admin / User)
+- Angular HTTP Interceptor automatically attaches Bearer tokens to all API requests
+- Protected routes — unauthenticated users are redirected to login
+
+### Books
+- Browse full catalog with title, author, category, publisher, price, and publication year
+- Add, edit, and delete books (Admin only)
+- Borrow a book with one click (User)
+
+### Authors
+- View all authors
+- Add, edit, and delete authors (Admin only)
+
+### Loans
+- Users can borrow books and track them under "My Library"
+- Admins see all loans across all users
+- Loan statuses: **Active**, **Overdue**, **Returned**
+- Admins can mark loans overdue, process returns, or delete loan records
+
+### Dashboard
+- Live stats: total books, total authors, active loans, overdue count
+- Recent books list on the home screen
+
+---
+
+## Tech Stack
+
+### Backend
+| Technology | Purpose |
+|---|---|
+| ASP.NET Core | REST API framework |
+| Entity Framework Core | ORM / database access |
+| PostgreSQL | Relational database |
+| ASP.NET Core Identity | User management |
+| JWT (JSON Web Tokens) | Stateless authentication |
+
+### Frontend
+| Technology | Purpose |
+|---|---|
+| Angular 21 | SPA framework |
+| TypeScript | Type-safe development |
+| RxJS | Reactive data streams |
+| Angular HTTP Interceptor | Automated token injection |
+
+### DevOps
+| Tool | Purpose |
+|---|---|
+| Vercel | Frontend hosting |
+| Railway | Backend + PostgreSQL hosting |
+| Docker | Containerized backend |
+| GitHub | Version control |
+
+---
+
+## Architecture Highlights
+
+- **Server-side pagination** and LINQ query optimization for low-latency data retrieval on large datasets
+- **Angular HTTP Interceptor** centralizes auth token injection, keeping API calls clean across the entire app
+- **Role-based UI** — admin users see a Loans management nav item and edit/delete controls; regular users see My Library and Borrow buttons
+- **Secure identity management** via ASP.NET Core Identity with hashed passwords and JWT token issuance
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- .NET 8 SDK
+- PostgreSQL
+
+### Backend Setup
+```bash
+git clone https://github.com/erinmaldonado/Library-Server
+cd Library-Server
+# Add your connection string to appsettings.json
+dotnet ef database update
+dotnet run
+```
+
+### Frontend Setup
+```bash
+git clone https://github.com/erinmaldonado/Library-Client
+cd Library-Client
+npm install
+ng serve
+```
+
+The app will be available at `http://localhost:4200`.
+
+---
+
+## Demo Credentials
+
+| Role | Username | Password |
+|---|---|---|
+| Admin | admin | admin123 |
+| User | user@email.com | user123 |
+
+---
+
+## Author
+
+**Erin Maldonado**  
+[LinkedIn](https://linkedin.com/in/erinmaldonado) · [GitHub](https://github.com/erinmaldonado)
