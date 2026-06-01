@@ -13,27 +13,17 @@ A full-stack web application for managing a library's books, authors, and loans.
 ### Dashboard
 > Personalized welcome with live stats: total books, authors, active loans, and overdue count.
 
-![Dashboard](screenshots/dashboard.png)
-
 ### Books
 > Browse the full catalog with title, author, category, publisher, price, and year. Users can borrow books directly from this view.
-
-![Books](screenshots/books.png)
 
 ### Authors
 > Manage authors with add, edit, and delete functionality.
 
-![Authors](screenshots/authors.png)
-
 ### Loans (Admin)
 > Admins see all loans across all users with borrowed/due dates, status badges, and the ability to mark loans overdue, process returns, or delete records.
 
-![Loans Admin](screenshots/loans-admin.png)
-
 ### My Library (User)
 > Each user sees only their own borrowed books, due dates, and loan status.
-
-![My Library](screenshots/my-library.png)
 
 ---
 
